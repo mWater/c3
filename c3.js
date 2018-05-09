@@ -1298,6 +1298,9 @@
             $$.initGridLines();
         }
 
+        // Cover whole with rects for events
+        $$.initEventRect();
+
         // Define g for chart
         $$.initChartElements();
 
@@ -1306,9 +1309,6 @@
 
         // Set targets
         $$.updateTargets($$.data.targets);
-
-        // Cover whole with rects for events
-        $$.initEventRect();
 
         // Set default extent if defined
         if (config.axis_x_selection) {
@@ -4560,9 +4560,7 @@
                 return;
             }
             $$.d3.select(this).selectAll('path').transition().duration($$.expandDuration(d.data.id)).attr("d", $$.svgArcExpanded).transition().duration($$.expandDuration(d.data.id) * 2).attr("d", $$.svgArcExpandedSub).each(function (d) {
-                if ($$.isDonutType(d.data)) {
-                    // callback here
-                }
+                if ($$.isDonutType(d.data)) ;
             });
         });
     };
@@ -8751,7 +8749,7 @@
         if (position.indexOf('right') >= 0) {
             x = $$.currentWidth - $$.getTextRect($$.title.node().textContent, $$.CLASS.title, $$.title.node()).width - config.title_padding.right;
         } else if (position.indexOf('center') >= 0) {
-            x = ($$.currentWidth - $$.getTextRect($$.title.node().textContent, $$.CLASS.title, $$.title.node()).width) / 2;
+            x = Math.max(($$.currentWidth - $$.getTextRect($$.title.node().textContent, $$.CLASS.title, $$.title.node()).width) / 2, 0);
         } else {
             // left
             x = config.title_padding.left;
